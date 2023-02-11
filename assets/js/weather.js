@@ -1,6 +1,6 @@
 import { weather_data } from './data.js';
 
-let chooseDay = ()=>{
+let chooseCity = ()=>{
     let element = document.getElementById("dropdownMenuButton");
 
     element.addEventListener('change', (event) => {
@@ -39,7 +39,7 @@ let loadDayForecastData = (value) => {
     let tag_late_text = document.getElementById('late_text');
     let tag_night_text = document.getElementById('night_text');
 
-    let {city, cloudiness, date, wind, rainfall, maxtemperature, mintemperature, forecast_today, ...otherData } = cityName;
+    let {city, cloudiness, date, wind, rainfall, maxtemperature, mintemperature, forecast_today,forecast_week, ...otherData } = cityName;
     let [late, night] = forecast_today;
     let { forecast: forecast_late, text: text_late, temperature: temperature_late, icon: icon_late } = late;
     let { forecast: forecast_night, text: text_night, temperature: temperature_night, icon: icon_night } = night;
@@ -63,9 +63,22 @@ let loadDayForecastData = (value) => {
 
 let loadWeekForecastData = () => {
     let forecast_data = document.getElementsByClassName('list-group')[0];
+    let element = document.getElementById("dropdownMenuButton").value;
+    console.log(element);
+    let cityName;
+    switch (element){
+        case 'guayaquil':
+            cityName = weather_data[0];
+            break;
+        case 'ambato':
+            cityName = weather_data[1];
+            break;
+        case 'tena':
+            cityName = weather_data[2];
+            break;
+    }
 
-    let [city1, ...otherCities] = weather_data;
-    let { forecast_week } = city1;
+    let {forecast_week} = cityName;
     let [day1, day2, day3, day4, day5, day6, day7] = forecast_week;
     let { date, icon, text, temperature } = day1;
     let { min, max } = temperature;
@@ -95,7 +108,7 @@ let options = () =>{
 
 options();
 document.addEventListener("DOMContentLoaded", (event) => {
-    chooseDay();
+    chooseCity();
     let element = document.getElementById("loadinfo");
 
     element.addEventListener('click', (event) => {
