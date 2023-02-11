@@ -1,8 +1,27 @@
 import { weather_data } from './data.js';
 
-let loadDayForecastData = () => {
-    console.log(weather_data);
+let chooseDay = ()=>{
+    let element = document.getElementById("dropdownMenuButton");
 
+    element.addEventListener('change', (event) => {
+    let selectedValue = event.target.value;
+    loadDayForecastData(selectedValue);
+});
+}
+
+let loadDayForecastData = (value) => {
+    let cityName;
+    switch (value){
+        case 'guayaquil':
+            cityName = weather_data[0];
+            break;
+        case 'ambato':
+            cityName = weather_data[1];
+            break;
+        case 'tena':
+            cityName = weather_data[2];
+            break;
+    }
     let tag_city = document.getElementById('city');
     let tag_min = document.getElementById('mintemperature');
     let tag_max = document.getElementById('maxtemperature');
@@ -20,8 +39,7 @@ let loadDayForecastData = () => {
     let tag_late_text = document.getElementById('late_text');
     let tag_night_text = document.getElementById('night_text');
 
-    let [city1, ...otherCities] = weather_data;
-    let { city, cloudiness, date, wind, rainfall, maxtemperature, mintemperature, forecast_today, ...otherData } = city1;
+    let {city, cloudiness, date, wind, rainfall, maxtemperature, mintemperature, forecast_today, ...otherData } = cityName;
     let [late, night] = forecast_today;
     let { forecast: forecast_late, text: text_late, temperature: temperature_late, icon: icon_late } = late;
     let { forecast: forecast_night, text: text_night, temperature: temperature_night, icon: icon_night } = night;
@@ -66,8 +84,18 @@ let loadWeekForecastData = () => {
     forecast_data.innerHTML = message;
 }
 
+let options = () =>{
+    let select = document.getElementById('dropdownMenuButton');
+
+    select.innerHTML = `<option value="" selected disabled hidden>Seleccione una ciudad</option>
+    <option class="dropdown-item" value="guayaquil">Guayaquil</option>
+    <option class="dropdown-item" value="ambato">Ambato</option>
+    <option class="dropdown-item" value="tena">Tena</option>`;
+}
+
+options();
 document.addEventListener("DOMContentLoaded", (event) => {
-    loadDayForecastData();
+    chooseDay();
     let element = document.getElementById("loadinfo");
 
     element.addEventListener('click', (event) => {
